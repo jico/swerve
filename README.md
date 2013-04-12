@@ -63,5 +63,4 @@ setting passed in through the original configuration.
 
 Copyright 2013 Jico Baligod.
 
-Licensed under the [http://github.com/jico/swerve/raw/master/LICENSE](MIT
-License).
+Licensed under the [MIT License](http://github.com/jico/swerve/raw/master/LICENSE).
