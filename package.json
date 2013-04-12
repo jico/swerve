@@ -24,7 +24,7 @@
   },
   "main": "./index.js",
   "scripts": {
-    "build": "./node_modules/.bin/coffee -o . src",
+    "build": "./node_modules/.bin/coffee -co . src",
     "test":  "./node_modules/.bin/mocha --reporter spec --timeout 4000 --ignore-leaks",
     "watch": "./node_modules/.bin/coffee -wo . src"
   }
