@@ -7,7 +7,7 @@ module.exports =
 
   feature: (name) ->
     config = @configuration[@env]
-    if config[name]?
+    if config?[name]?
       if @urlParamPresent(name) then @getUrlParam(name) else config[name]
     else
       undefined

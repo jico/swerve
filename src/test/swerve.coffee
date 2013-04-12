@@ -37,6 +37,11 @@ describe 'Swerve', ->
       expect(Swerve.feature('feature_one')).to.be(true)
       expect(Swerve.feature('feature_two')).to.eql(mock_config.development.feature_two)
 
+    it 'returns undefined for environments undefined', ->
+      Swerve.configure mock_config
+      Swerve.setEnv 'nonexistent_env'
+      expect(Swerve.feature('feature_one')).to.be(undefined)
+
     it 'returns undefined for features undefined', ->
       Swerve.configure mock_config
       Swerve.setEnv 'development'
