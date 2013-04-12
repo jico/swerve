@@ -10,7 +10,7 @@ Add `swerve` to your `package.json` file and `npm install`. Or:
 npm install swerve --save
 ```
 
-If you're using Spine, also make sure you add it to your `slug.json` file as a
+If you're using Hem, also make sure you add it to your `slug.json` file as a
 dependency.
 
 ## Configuration
