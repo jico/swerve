@@ -1,3 +1,5 @@
+![Travis-CI](https://travis-ci.org/jico/swerve.png)
+
 # Swerve
 
 Feature flipping for Node.js
