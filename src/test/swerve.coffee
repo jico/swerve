@@ -54,6 +54,13 @@ describe 'Swerve', ->
       Swerve.setEnv 'development'
       expect(Swerve.feature('feature_one')).to.eql(false)
 
+    it 'allows url params to set feature even if feature undefined in environment', ->
+      `window = jsdom.createWindow()`
+      `window.location.href = 'http://www.example.com?feature_one=true'`
+      Swerve.configure mock_config
+      Swerve.setEnv 'nonexistent_env'
+      expect(Swerve.feature('feature_one')).to.eql(true)
+
   describe '.urlParamPresent', ->
     it 'checks existence of url param', ->
       `window = jsdom.createWindow()`

@@ -6,11 +6,10 @@ module.exports =
     @configuration = configuration
 
   feature: (name) ->
+    return @getUrlParam(name) if @urlParamPresent(name)
+
     config = @configuration[@env]
-    if config?[name]?
-      if @urlParamPresent(name) then @getUrlParam(name) else config[name]
-    else
-      undefined
+    if config?[name]? then config[name] else undefined
 
   urlParamPresent: (name) ->
     regex = RegExp("#{name}=(.+?)(&|$)")
