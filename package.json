@@ -1,0 +1,31 @@
+{
+  "name":        "swerve",
+  "version":     "0.0.1",
+  "description": "Feature flipper.",
+  "author":      "Jico Baligod <jico@baligod.com>",
+  "homepage": [
+    "https://github.com/jico/swerve"
+  ],
+  "repository": [
+    "type": "git",
+    "url":  "https://github.com/jico/swerve"
+  ],
+  "licenses": [
+    {
+      "type": "MIT",
+      "url":  "http://github.com/jico/swerve/raw/master/LICENSE"
+    }
+  ],
+  "devDependencies": {
+    "coffee-script": "1.6.2",
+    "expect.js":     "0.2.0",
+    "jsdom":         "0.5.6",
+    "mocha":         "1.8.2"
+  },
+  "main": "./index.js",
+  "scripts": {
+    "build": "./node_modules/.bin/coffee -o . src",
+    "test":  "./node_modules/.bin/mocha --reporter spec --timeout 4000 --ignore-leaks",
+    "watch": "./node_modules/.bin/coffee -wo . src"
+  }
+}

@@ -1,0 +1,8 @@
+/lib
+node_modules
+npm-debug.log
+.DS_Store
+!.keep
+*.orig
+*.sw[nomp]
+*~
