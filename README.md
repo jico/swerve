@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/jico/swerve.png)](https://travis-ci.org/jico/swerve)
+[![Build Status](https://travis-ci.org/jico/swerve.png?branch=master)](https://travis-ci.org/jico/swerve)
 
 # Swerve
 
