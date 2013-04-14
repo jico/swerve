@@ -16,6 +16,15 @@ module.exports =
     config = @configuration[@env]
     if config?[name]? then config[name] else undefined
 
+  enable: (name, value) ->
+    config = @configuration[@env]
+    value ?= true
+    if config?[name]? then config[name] = value else undefined
+
+  disable: (name) ->
+    config = @configuration[@env]
+    if config?[name]? then config[name] = false else undefined
+
   urlParamPresent: (name) ->
     regex = RegExp("#{name}=(.+?)(&|$)")
     match = (regex.exec(window.location.search) || [null,null])[1]

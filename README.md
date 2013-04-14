@@ -59,6 +59,22 @@ section below). While you usually set the value to either `true` or `false`, you
 have the flexibility of setting it to whatever you may need (i.e. a hash of
 settings for that feature for each environment).
 
+## Toggling on the fly
+
+A feature can be enabled by calling `Swerve.enable('notifications')` for
+example, which simply sets that feature to `true` under the current environment.
+You can optionally set the feature to a value:
+
+```coffeescript
+notification_options =
+  gutter:  true
+  disrupt: false
+Swerve.enable 'notifications', notification_options
+```
+
+Similarly, a feature can be disabled (set to `false`) by calling
+`Swerve.disable('notifications')`.
+
 ## Toggling with URL parameters
 
 Features can also be enabled or disabled by passing in the feature name as a
