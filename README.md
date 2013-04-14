@@ -17,8 +17,9 @@ dependency.
 
 ## Configuration
 
-Require Swerve and passing a hash of feature settings for each environment.
-Typically, you'll want Swerve globally available throughout your app.
+Require Swerve and pass a hash of feature settings for each environment.
+Typically, you'll want Swerve globally available throughout your app. In
+CoffeeScript, you would have something similar to the following:
 
 ```coffeescript
 Swerve = require('swerve')
@@ -29,7 +30,14 @@ Swerve.configure
     notifications: false
 ```
 
-Set the current environment.
+Alternatively, you can store your settings in a JSON file and pass the file name
+instead.
+
+```coffeescript
+Swerve.configure('swerve.json')
+```
+
+Once you've configured your feature settings, you need to set the current environment:
 
 ```coffeescript
 Swerve.setEnv('development')

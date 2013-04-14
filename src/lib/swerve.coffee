@@ -1,9 +1,14 @@
+fs = require('fs')
+
 module.exports =
   setEnv: (env) ->
     @env = env
 
   configure: (configuration) ->
-    @configuration = configuration
+    if typeof configuration == 'string' && fs.existsSync(configuration)
+      @configuration = JSON.parse fs.readFileSync(configuration)
+    else
+      @configuration = configuration
 
   feature: (name) ->
     return @getUrlParam(name) if @urlParamPresent(name)

@@ -1,3 +1,4 @@
+fs     = require('fs')
 expect = require('expect.js')
 jsdom  = require('jsdom')
 Swerve = require('../lib/swerve')
@@ -15,17 +16,26 @@ describe 'Swerve', ->
         setting_one: true
         setting_two: false
 
+  beforeEach ->
+    Swerve.configure undefined
+
   describe '.setEnv', ->
     it 'sets the environment', ->
-      expect(Swerve.env).to.be(undefined)
       Swerve.setEnv('development')
       expect(Swerve.env).to.be('development')
 
   describe '.configure', ->
-    it 'caches the configuration', ->
+    it 'accepts a JSON object and caches the configuration', ->
       expect(Swerve.configuration).to.be(undefined)
       Swerve.configure mock_config
       expect(Swerve.configuration).to.eql(mock_config)
+
+    it 'accepts a json file path', ->
+      filename = 'config.json'
+      fs.writeFileSync filename, JSON.stringify(mock_config, null, 2)
+      Swerve.configure filename
+      expect(Swerve.configuration).to.eql(mock_config)
+      fs.unlinkSync filename
 
   describe '.feature', ->
     `window = jsdom.createWindow()`
