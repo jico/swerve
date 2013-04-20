@@ -17,31 +17,51 @@ dependency.
 
 ## Configuration
 
-Require Swerve and pass a hash of feature settings for each environment.
-Typically, you'll want Swerve globally available throughout your app. In
-CoffeeScript, you would have something similar to the following:
+Require Swerve (globally, in most cases). In CoffeeScript, you'll have something
+similar to below.
 
 ```coffeescript
 Swerve = require('swerve')
-Swerve.configure
-  development:
-    notifications: true
-  production:
-    notifications: false
+
+# Or, if you have this in some setup file
+window?.Swerve = require('swerve')
 ```
 
-Alternatively, you can store your settings in a JSON file and pass the file name
+Then, you'll need to configure Swerve with the feature settings you want for
+each environment. There are three ways to do this:
+
+* Pass in a hash.
+
+  ```coffeescript
+  Swerve.configure
+    development:
+      notifications: true
+    production:
+      notifications: false
+  ```
+
+* Store your settings in a JSON file and pass the file name
 instead.
 
-```coffeescript
-Swerve.configure('swerve.json')
-```
+  ```coffeescript
+  Swerve.configure('features.json')
+  ```
 
-Once you've configured your feature settings, you need to set the current environment:
+* Or, since `configure()` searches for a file named `swerve.json` in the current
+  working directory, you can save your settings in that file, or call `save()`
+  at some point in your application.
+
+Finally, once you've configured your feature settings, you need to set the current environment:
 
 ```coffeescript
 Swerve.setEnv('development')
 ```
+
+### Saving configuration
+
+You can save the state of your current configuration at any time by calling
+`.save()`. This function takes a single, optional file name argument, which
+defaults to `swerve.json`.
 
 ## Feature flipping
 

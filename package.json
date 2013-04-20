@@ -1,6 +1,6 @@
 {
   "name":        "swerve",
-  "version":     "0.2.0",
+  "version":     "0.3.0",
   "description": "Feature flipper.",
   "author":      "Jico Baligod <jico@baligod.com>",
   "homepage": [
@@ -23,7 +23,8 @@
     "coffee-script": "1.6.2",
     "expect.js":     "0.2.0",
     "jsdom":         "0.5.6",
-    "mocha":         "1.8.2"
+    "mocha":         "1.8.2",
+    "rimraf":        "2.1.4"
   },
   "main": "./index.js",
   "scripts": {

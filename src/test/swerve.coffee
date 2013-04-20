@@ -1,9 +1,14 @@
-fs     = require('fs')
 expect = require('expect.js')
+fs     = require('fs')
 jsdom  = require('jsdom')
+rimraf = require('rimraf')
 Swerve = require('../lib/swerve')
 
 describe 'Swerve', ->
+  cwd     = process.cwd()
+  testDir = "#{__dirname}/swerve_test"
+
+  clean = -> rimraf.sync(testDir)
 
   beforeEach ->
     @mock_config =
@@ -17,9 +22,20 @@ describe 'Swerve', ->
         feature_two:
           setting_one: true
           setting_two: false
+
+    process.chdir(cwd)
+    clean()
+    fs.mkdirSync  testDir
+    process.chdir testDir
+
+    # Reset
     `window = jsdom.createWindow()`
     `window.location.href = 'http://www.example.com'`
-    Swerve.configure undefined
+    Swerve.configuration = undefined
+
+  after ->
+    process.chdir(cwd)
+    clean()
 
   describe '.setEnv', ->
     it 'sets the environment', ->
@@ -27,6 +43,11 @@ describe 'Swerve', ->
       expect(Swerve.env).to.be('development')
 
   describe '.configure', ->
+    it 'looks for swerve.json by default', ->
+      fs.writeFileSync("#{process.cwd()}/swerve.json", JSON.stringify(@mock_config))
+      Swerve.configure()
+      expect(Swerve.configuration).to.eql(@mock_config)
+
     it 'accepts a JSON object and caches the configuration', ->
       expect(Swerve.configuration).to.be(undefined)
       Swerve.configure @mock_config
@@ -38,6 +59,11 @@ describe 'Swerve', ->
       Swerve.configure filename
       expect(Swerve.configuration).to.eql(@mock_config)
       fs.unlinkSync filename
+
+    it 'throws an error for invalid configuration or no swerve.json file', ->
+      expect(fs.existsSync('swerve.json')).to.be(false)
+      expect(Swerve.configure).to.throwError (err) ->
+        expect(err.message).to.eql('invalid or missing configuration')
 
   describe '.feature', ->
     `window = jsdom.createWindow()`
@@ -126,3 +152,24 @@ describe 'Swerve', ->
       expect(Swerve.getUrlParam('one')).to.be.a('boolean')
       expect(Swerve.getUrlParam('two')).to.be(10)
       expect(Swerve.getUrlParam('two')).to.be.a('number')
+
+  describe '.save', ->
+    it 'saves current configuration to swerve.json file by default', ->
+      Swerve.configure @mock_config
+      Swerve.setEnv 'production'
+      Swerve.enable 'feature_one'
+      Swerve.save()
+      filepath = "#{process.cwd()}/swerve.json"
+      expect(fs.existsSync(filepath)).to.be(true)
+      saved_config = require(filepath)
+      expect(saved_config.production.feature_one).to.be(true)
+
+    it 'saves current configuration to a given file name', ->
+      Swerve.configure @mock_config
+      Swerve.setEnv 'production'
+      Swerve.enable 'feature_one'
+      filepath = "#{process.cwd()}/test.json"
+      Swerve.save(filepath)
+      expect(fs.existsSync(filepath)).to.be(true)
+      saved = require(filepath)
+      expect(saved.production.feature_one).to.be(true)

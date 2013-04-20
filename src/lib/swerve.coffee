@@ -1,12 +1,18 @@
-fs = require('fs')
+fs   = require('fs')
+path = require('path')
 
 module.exports =
   setEnv: (env) ->
     @env = env
 
   configure: (configuration) ->
-    if typeof configuration == 'string' && fs.existsSync(configuration)
-      @configuration = JSON.parse fs.readFileSync(configuration)
+    configuration or= 'swerve.json'
+    if typeof configuration == 'string'
+      filepath = path.join(process.cwd(), configuration)
+      if fs.existsSync(filepath)
+        @configuration = JSON.parse(fs.readFileSync(filepath))
+      else
+        throw new Error('invalid or missing configuration')
     else
       @configuration = configuration
 
@@ -34,6 +40,9 @@ module.exports =
     regex = RegExp("#{name}=(.+?)(&|$)")
     match = (regex.exec(window.location.search) || [null,null])[1]
     @castVariable decodeURI(match)
+
+  save: (file_path) ->
+    fs.writeFileSync(file_path || 'swerve.json', JSON.stringify(@configuration))
 
   # Private
 
