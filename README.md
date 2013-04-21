@@ -65,16 +65,26 @@ defaults to `swerve.json`.
 
 ## Feature flipping
 
-Now you can toggle different blocks of code throughout your app based on enabled features.
+Now you can toggle different blocks of code throughout your app based on enabled
+features in one of two ways:
 
+Check the feature as a property on the `Swerve` object.
 ```coffeescript
-if Swerve.feature('notifications')
-  # Code for new notifications feature
+if Swerve.notifications
+  console.log('You have notifications!')
 else
-  # Current code without new notifications
+  console.log('Notifications coming soon.')
 ```
 
-`Swerve.feature()` returns the value from the configuration (or URL param, see
+Call `feature` and pass in the feature name.
+```coffeescript
+if Swerve.feature('notifications')
+  console.log('You have notifications!')
+else
+  console.log('Notifications coming soon.')
+```
+
+Checking a feature returns the value from the configuration (or URL param, see
 section below). While you usually set the value to either `true` or `false`, you
 have the flexibility of setting it to whatever you may need (i.e. a hash of
 settings for that feature for each environment).

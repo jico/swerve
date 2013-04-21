@@ -31,18 +31,36 @@ describe 'Swerve', ->
     # Reset
     `window = jsdom.createWindow()`
     `window.location.href = 'http://www.example.com'`
-    Swerve.configuration = undefined
+    Swerve.reset()
 
   after ->
     process.chdir(cwd)
     clean()
 
+  describe '.reset', ->
+    it 'resets Swerve object and clears configuration', ->
+      Swerve.configure(@mock_config)
+      Swerve.setEnv('development')
+      expect(Swerve.configuration).not.to.be(undefined)
+      expect(Swerve.env).not.to.be(undefined)
+      expect(Swerve.feature_one).not.to.be(undefined)
+      Swerve.reset()
+      expect(Swerve.configuration).to.be(undefined)
+      expect(Swerve.env).to.be(undefined)
+      expect(Swerve.feature_one).to.be(undefined)
+
   describe '.setEnv', ->
+    it 'returns the environment', ->
+      expect(Swerve.setEnv('development')).to.be('development')
+
     it 'sets the environment', ->
       Swerve.setEnv('development')
       expect(Swerve.env).to.be('development')
 
   describe '.configure', ->
+    it 'returns the configuration', ->
+      expect(Swerve.configure(@mock_config)).to.eql(@mock_config)
+
     it 'looks for swerve.json by default', ->
       fs.writeFileSync("#{process.cwd()}/swerve.json", JSON.stringify(@mock_config))
       Swerve.configure()
@@ -58,12 +76,31 @@ describe 'Swerve', ->
       fs.writeFileSync filename, JSON.stringify(@mock_config, null, 2)
       Swerve.configure filename
       expect(Swerve.configuration).to.eql(@mock_config)
-      fs.unlinkSync filename
+
+    it 'sets features as keys on the Swerve object', ->
+      expect(Swerve.feature_one).to.be(undefined)
+      expect(Swerve.feature_two).to.be(undefined)
+      Swerve.configure @mock_config
+      Swerve.setEnv 'development'
+      expect(Swerve.feature_one).to.eql(@mock_config.development.feature_one)
+      expect(Swerve.feature_two).to.eql(@mock_config.development.feature_two)
 
     it 'throws an error for invalid configuration or no swerve.json file', ->
       expect(fs.existsSync('swerve.json')).to.be(false)
       expect(Swerve.configure).to.throwError (err) ->
-        expect(err.message).to.eql('invalid or missing configuration')
+        expect(err.message).to.eql('Invalid or missing configuration')
+
+    it 'throws an error for features that will overwrite existing Swerve property', ->
+      badConfig =
+        development:
+          feature_one: true
+          save:        true
+          enable:      true
+      try
+        Swerve.configure(badConfig)
+      catch err
+        expectedMessage = "Illegal feature names: save,enable"
+        expect(err.message).to.eql(expectedMessage)
 
   describe '.feature', ->
     `window = jsdom.createWindow()`

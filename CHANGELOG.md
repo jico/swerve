@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.4.0 - 2013-04-21
+
+* Added `.reset` for pristine `Swerve` object.
+* Features are now set as properties on `Swerve` object.
+* Throw error if feature name (in any environment) in passed configuration
+  conflicts with existing `Swerve` property.
+
 ## v0.3.0 - 2013-04-20
 
 * Added `.save` function to save current configuration to file.
