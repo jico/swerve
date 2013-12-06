@@ -28,9 +28,8 @@ window?.Swerve = require('swerve')
 ```
 
 Then, you'll need to configure Swerve with the feature settings you want for
-each environment. There are three ways to do this:
+each environment by passing in a hash.
 
-Pass in a hash.
 ```coffeescript
 Swerve.configure
   development:
@@ -39,27 +38,11 @@ Swerve.configure
     notifications: false
 ```
 
-Store your settings in a JSON file and pass the file name
-instead.
-```coffeescript
-Swerve.configure('features.json')
-```
-
-Or, since `configure()` searches for a file named `swerve.json` in the current
-working directory, you can save your settings in that file, or call `save()`
-at some point in your application.
-
-Finally, once you've configured your feature settings, you need to set the current environment:
+Once you've configured your feature settings, you need to set the current environment:
 
 ```coffeescript
 Swerve.setEnv('development')
 ```
-
-### Saving configuration
-
-You can save the state of your current configuration at any time by calling
-`save()`. This function takes a single, optional file name argument, which
-defaults to `swerve.json`.
 
 ## Feature flipping
 

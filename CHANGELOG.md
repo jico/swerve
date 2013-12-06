@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.5.0 - 2013-12-06
+
+* Removed `.save` function and file configurations, as they are not supported in
+  the browser.
+
 ## v0.4.0 - 2013-04-21
 
 * Added `.reset` for pristine `Swerve` object.

@@ -1,6 +1,3 @@
-fs   = require('fs')
-path = require('path')
-
 module.exports =
   setEnv: (env) ->
     @_keys or= Object.keys(@)
@@ -10,14 +7,6 @@ module.exports =
 
   configure: (configuration) ->
     @_keys or= Object.keys(@)
-    configuration or= 'swerve.json'
-    if typeof configuration == 'string'
-      filepath = path.join(process.cwd(), configuration)
-      if fs.existsSync(filepath)
-        configuration = JSON.parse(fs.readFileSync(filepath))
-      else
-        throw new Error('Invalid or missing configuration')
-
     if conflicts = @invalidConfig(configuration)
       throw new Error("Illegal feature names: #{conflicts}")
     else
@@ -49,9 +38,6 @@ module.exports =
     regex = RegExp("#{name}=(.+?)(&|$)")
     match = (regex.exec(window.location.search) || [null,null])[1]
     @castVariable decodeURI(match)
-
-  save: (file_path) ->
-    fs.writeFileSync(file_path || 'swerve.json', JSON.stringify(@configuration))
 
   reset: ->
     if @configuration?[@env]?
